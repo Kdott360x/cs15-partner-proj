@@ -5,7 +5,7 @@
  *
  *  CS 15 PROJ3
  *
- *  purpose: This program compresses and decompresses files using Huffman coding
+ *  purpose: implement directory traversal functions and string cleaning
  */
 
 #include "FSTree.h"
