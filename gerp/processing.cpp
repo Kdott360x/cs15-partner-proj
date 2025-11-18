@@ -20,7 +20,7 @@ string stripNonAlphaNum(string input){
 }
 
 
-
+// Comentation
 static void traverseDirectoryHelper(DirNode *node, string pathSoFar) {
     if (node == nullptr) {
         return;
