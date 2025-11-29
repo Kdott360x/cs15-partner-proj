@@ -3,9 +3,10 @@
  *  Henry Dotterer and Tvisha Gupta 
  *  11/18/25
  *
- *  CS 15 PROJ3
+ *  CS 15 PROJ4
  *
- *  purpose: implement directory traversal functions and string cleaning
+ *  purpose: This file contains the implementations for the 
+ *  directory traversal and stripping nonalphanumeric characters functions.
  */
 
 #include "FSTree.h"
@@ -23,17 +24,25 @@ using namespace std;
 * tested:    no
 */
 string stripNonAlphaNum(string input){
+    //checks if empty string
+    if(input.length() == 0) {
+        return input;
+    }
+
     // check if valid first char
-    if (isalnum(input[0])) {
-        // all set
-    } else {
+    if (not isalnum(input[0])) {
         int chars_to_remove = 0;
         int index = 0;
 
         // count non-alphanumeric chars at start
-        while (not isalnum(input[index])) {
+        while (index < input.length() and (not isalnum(input[index]))) {
             chars_to_remove++;
             index++;
+        }
+
+        //no alphanumeric characters
+        if (index == input.length()) {
+            return "";
         }
 
         // remove them
@@ -41,16 +50,19 @@ string stripNonAlphaNum(string input){
     }
 
     // count backwards
-    if (isalnum(input[input.length() - 1])) {
-        // all set
-    } else {
+    if (not isalnum(input[input.length() - 1])) {
         int chars_to_remove = 0;
         int index = input.length() - 1;
 
         // count non-alphanumeric chars from end, work backward
-        while (not isalnum(input[index])) {
+        while (index >= 0 and (not isalnum(input[index]))) {
             chars_to_remove++;
             index--;
+        }
+
+        //no alphanumeric characters
+        if (index < 0) {
+            return "";
         }
 
         // remove

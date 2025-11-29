@@ -12,6 +12,11 @@
 ## At the end, you can delete this comment!
 ## 
 
+unit_test: unit_test_driver.o processing.o FSTree.o DirNode.o
+	$(CXX) ${CXXFLAGS} unit_test_driver.o processing.o FSTree.o DirNode.o
+
+processing.o: processing.cpp processing.h
+	$(CXX) ${CXXFLAGS} -c processing.cpp
 ##
 ## Here is a special rule that removes all .o files besides the provided ones 
 ## (DirNode.o and FSTree.o), all temporary files (ending with ~), and 
@@ -27,4 +32,3 @@ clean:
 		-name '*.o' ! -name 'FSTree.o' ! -name 'DirNode.o' \
 		\) -exec rm -f {} \;
 	@rm -f *~ a.out
-

@@ -1,9 +1,16 @@
+/*
+ *  processing.h
+ *  Henry Dotterer and Tvisha Gupta 
+ *  11/18/25
+ *
+ *  CS 15 PROJ4
+ *
+ *  purpose: This file contains the interface for the processing.cpp functions.
+ */
+
+
 #ifndef __PROCESSING_H
 #define __PROCESSING_H
-
-/*
-*   TODO: Update file header if you use this file in your solution to phase 2 
-*/
 
 #include <string>
 using namespace std;
