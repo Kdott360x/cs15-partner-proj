@@ -38,8 +38,8 @@ void test1() {
    assert(stripNonAlphaNum("123&456") == "123&456");
    assert(stripNonAlphaNum("") == "");
    assert(stripNonAlphaNum("!!!") == "");
-    assert(stripNonAlphaNum("%%%") == "");
-    assert(stripNonAlphaNum("   ") == "");
-    assert(stripNonAlphaNum("@#$^&*") == "");
+   assert(stripNonAlphaNum("%%%") == "");
+   assert(stripNonAlphaNum("   ") == "");
+   assert(stripNonAlphaNum("@#$^&*") == "");
 
 }
