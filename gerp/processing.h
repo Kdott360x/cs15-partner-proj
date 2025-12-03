@@ -13,6 +13,8 @@
 #define __PROCESSING_H
 
 #include <string>
+#include <vector>
+
 using namespace std;
 
 string stripNonAlphaNum(string input);
