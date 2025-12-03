@@ -7,7 +7,6 @@ struct Location {
     int fileID;
     int lineNum;
     std::string originalWord;
-    std::string *originalLine;
 };
 
 #endif
