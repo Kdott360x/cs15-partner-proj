@@ -91,12 +91,12 @@ static void traverseDirectoryHelper(DirNode *node, string pathSoFar) {
     pathSoFar += node->getName() + "/";
 
     // print files
-    for (int i = 0; i < node->numFiles(); i++) {
+    for (size_t i = 0; i < node->numFiles(); i++) {
         cout << pathSoFar << node->getFile(i) << endl;
     }
 
     // recurse subdirs 
-    for (int j = 0; j < node->numSubDirs(); j++) {
+    for (size_t j = 0; j < node->numSubDirs(); j++) {
         DirNode *subdir = node->getSubDir(j);
         traverseDirectoryHelper(subdir, pathSoFar);
     }

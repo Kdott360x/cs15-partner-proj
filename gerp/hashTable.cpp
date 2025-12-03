@@ -46,7 +46,7 @@ void hashTable::insert(const string &key, Location &value) {
     vector<Element> &currBucket = buckets[bucketNum];
 
     //look for key in vector in current bucket
-    for(int i = 0; i < currBucket.size(); i++) {
+    for(size_t i = 0; i < currBucket.size(); i++) {
         if (currBucket[i].key == key) {
             currBucket[i].locs.push_back(value);
             temp = true;
@@ -82,7 +82,7 @@ vector<Location>* hashTable::lookup(const string &key) {
     vector<Element> &currBucket = buckets[bucketNum];
 
     //return the whole appropriate vector
-    for(int i = 0; i < currBucket.size(); i++) {
+    for(size_t i = 0; i < currBucket.size(); i++) {
         if (currBucket[i].key == key) {
             return &currBucket[i].locs;
         }
@@ -137,7 +137,7 @@ void hashTable::rehash() {
 
     for (int i = 0; i < oldSize; i++) {
         vector<Element> &old = buckets[i];
-        for (int j = 0; j < old.size(); j++) {
+        for (size_t j = 0; j < old.size(); j++) {
             Element elem = old[j];
             int index = hasher(elem.key, currSize);
             currBuckets[index].push_back(elem);
