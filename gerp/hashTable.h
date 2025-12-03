@@ -15,6 +15,7 @@
 #include <string>
 #include <vector>
 #include <functional>
+#include "Location.h"
 
 using namespace std;
 
@@ -26,12 +27,6 @@ public:
     int size();
 
 private:
-    struct Location {
-        int fileID;
-        int lineNum;
-        string originalWord;
-        string *originalLine;
-    };
     struct Element {
         string key;
         vector<Location> locs;
