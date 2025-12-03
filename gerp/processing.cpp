@@ -125,7 +125,7 @@ void traverseDirectory(string directory){
 * purpose:   recursively traverse a directory tree and record all file paths
 * arguments: node      - pointer to the current DirNode
 *            pathSoFar - path prefix accumulated so far
-*            files     - vector to append full file paths into
+*            files     - vector to add full file paths into
 * returns:   none
 * effects:   pushes one string into files for each file in the subtree
 * tested:    no
@@ -155,9 +155,9 @@ static void collectFilesHelper(DirNode *node,
 * name:      collectFiles
 * purpose:   build an FSTree and collect paths for all files in a directory
 * arguments: rootDir - name/path of the root directory to traverse
-*            files   - vector to append full file paths into
+*            files   - vector to add full file paths into
 * returns:   none
-* effects:   constructs an FSTree and appends one string to files for each file
+* effects:   constructs an FSTree and add one string to files for each file
 * tested:    no
 */
 void collectFiles(const string &rootDir, vector<string> &files) {
