@@ -32,7 +32,7 @@ string stripNonAlphaNum(string input){
     // check if valid first char
     if (not isalnum(input[0])) {
         int chars_to_remove = 0;
-        int index = 0;
+        size_t index = 0;
 
         // count non-alphanumeric chars at start
         while (index < input.length() and (not isalnum(input[index]))) {
@@ -91,12 +91,12 @@ static void traverseDirectoryHelper(DirNode *node, string pathSoFar) {
     pathSoFar += node->getName() + "/";
 
     // print files
-    for (size_t i = 0; i < node->numFiles(); i++) {
+    for (int i = 0; i < node->numFiles(); i++) {
         cout << pathSoFar << node->getFile(i) << endl;
     }
 
     // recurse subdirs 
-    for (size_t j = 0; j < node->numSubDirs(); j++) {
+    for (int j = 0; j < node->numSubDirs(); j++) {
         DirNode *subdir = node->getSubDir(j);
         traverseDirectoryHelper(subdir, pathSoFar);
     }
