@@ -28,6 +28,8 @@ public:
 private:
     void buildIndex(const std::string &rootDir);
     void openOutput(const std::string &filename);
+    void handleSensitiveQuery(const std::string &query);
+    void handleInsensitiveQuery(const std::string &query);
 
     hashTable index;                  
     std::vector<std::string> filePaths;    
