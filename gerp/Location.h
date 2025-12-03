@@ -7,7 +7,7 @@ struct Location {
     int fileID;
     int lineNum;
     std::string originalWord;
-    std::string *originalLine;   // keep this for now since your hashTable uses it
+    std::string *originalLine;
 };
 
 #endif
