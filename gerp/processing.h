@@ -17,5 +17,7 @@ using namespace std;
 
 string stripNonAlphaNum(string input);
 void traverseDirectory(string directory);
+void collectFiles(const std::string &rootDir,
+                  std::vector<std::string> &files);
 
 #endif 

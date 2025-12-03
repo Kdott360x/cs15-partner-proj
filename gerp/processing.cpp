@@ -13,6 +13,7 @@
 #include "DirNode.h"
 #include <iostream>
 #include <string>
+#include <vector>
 using namespace std;
 
 /*
@@ -119,3 +120,31 @@ void traverseDirectory(string directory){
     traverseDirectoryHelper(root, "");
 }
 
+// NEW helper: collect all file paths into a vector instead of printing
+static void collectFilesHelper(DirNode *node,
+                               string pathSoFar,
+                               vector<string> &files) {
+    if (node == nullptr) {
+        return;
+    }
+
+    pathSoFar += node->getName() + "/";
+
+    // add files in this directory
+    for (int i = 0; i < node->numFiles(); i++) {
+        files.push_back(pathSoFar + node->getFile(i));
+    }
+
+    // recurse into subdirectories
+    for (int j = 0; j < node->numSubDirs(); j++) {
+        DirNode *subdir = node->getSubDir(j);
+        collectFilesHelper(subdir, pathSoFar, files);
+    }
+}
+
+// NEW top-level function: wrapper that builds the FSTree and calls helper
+void collectFiles(const string &rootDir, vector<string> &files) {
+    FSTree tree(rootDir);
+    DirNode *root = tree.getRoot();
+    collectFilesHelper(root, "");
+}
