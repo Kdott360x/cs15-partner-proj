@@ -38,3 +38,5 @@ private:
     void rehash();
     int hasher(const string &key, int mod);
 };
+
+#endif
