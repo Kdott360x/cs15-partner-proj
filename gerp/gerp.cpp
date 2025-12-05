@@ -8,7 +8,7 @@
  *           the interactive query loop for the gerp program.
  */
 
-#include "Gerp.h"
+#include "gerp.h"
 #include "processing.h"
 #include <sstream>
 #include <cctype>
