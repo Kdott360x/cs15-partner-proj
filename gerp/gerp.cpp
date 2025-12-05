@@ -150,5 +150,56 @@ void Gerp::handleSensitiveQuery(const string &query) {
 * tested:    no
 */
 void Gerp::run() {
+    string line;
 
+    while (true) {
+        cout << "Query? ";
+
+        if (!getline(cin, line)) {
+            cout << "Goodbye! Thank you and have a nice day." << endl;
+            return;
+        }
+
+        if (line.empty()) {
+            continue;
+        }
+
+        istringstream iss(line);
+        string first;
+        if (!(iss >> first)) {
+            continue;
+        }
+
+        // quit commands
+        if (first == "@q" || first == "@quit") {
+            cout << "Goodbye! Thank you and have a nice day." << endl;
+            return;
+        }
+
+        // change output file
+        if (first == "@f") {
+            string newFile;
+            if (iss >> newFile) {
+                openOutput(newFile);
+            }
+            continue;
+        }
+
+        // case-insensitive search
+        if (first == "@i" || first == "@insensitive") {
+            string word;
+            while (iss >> word) {
+                handleInsensitiveQuery(word);
+            }
+            continue;
+        }
+
+        // default: case-sensitive search on all tokens in the line
+        handleSensitiveQuery(first);
+
+        string word;
+        while (iss >> word) {
+            handleSensitiveQuery(word);
+        }
+    }
 }
