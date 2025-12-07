@@ -16,6 +16,8 @@ CXX      = clang++
 CXXFLAGS = -std=c++17 -Wall -Wextra -g
 PROVIDED_OBJS = FSTree.o DirNode.o
 
+all: gerp
+
 gerp: main.o gerp.o hashTable.o processing.o $(PROVIDED_OBJS)
 	$(CXX) $(CXXFLAGS) main.o gerp.o hashTable.o processing.o $(PROVIDED_OBJS) -o gerp
 
