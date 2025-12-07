@@ -18,9 +18,15 @@ int main(int argc, char *argv[]) {
         cerr << "Usage: ./gerp inputDirectory outputFile" << endl;
         return EXIT_FAILURE;
     }
-
-    Gerp g(argv[1], argv[2]);
-    g.run();
+    
+    try {
+        Gerp g(argv[1], argv[2]);
+        g.run();
+    } catch (const runtime_error &e) {
+        cerr << "Could not build index, reason:" << endl;
+        cerr << e.what() << endl;
+        return EXIT_FAILURE;
+    }
 
     return EXIT_SUCCESS;
 }
