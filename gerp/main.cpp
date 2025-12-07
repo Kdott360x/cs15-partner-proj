@@ -1,5 +1,26 @@
-#include "unit_tests.h"
+/*
+ *  main.cpp
+ *  Henry Dotterer and Tvisha Gupta
+ *
+ *  CS 15 PROJ4
+ *
+ *  purpose: Entry point for gerp program, sets up Gerp and runs it.
+ */
 
-int main() {
-    test1();
+#include "gerp.h"
+#include <iostream>
+#include <cstdlib>
+
+using namespace std;
+
+int main(int argc, char *argv[]) {
+    if (argc != 3) {
+        cerr << "Usage: ./gerp inputDirectory outputFile" << endl;
+        return EXIT_FAILURE;
+    }
+
+    Gerp g(argv[1], argv[2]);
+    g.run();
+
+    return EXIT_SUCCESS;
 }
