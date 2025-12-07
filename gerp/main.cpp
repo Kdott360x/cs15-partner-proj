@@ -13,6 +13,15 @@
 
 using namespace std;
 
+/*
+* name:      main
+* purpose:   runs the entire gerp query function!
+* arguments: command-line args from user terminal
+* returns:   automatic 1
+* effects:   creates a gerp object and runs the query if given
+*             enough command-line arguments
+* tested:    no
+*/
 int main(int argc, char *argv[]) {
     if (argc != 3) {
         cerr << "Usage: ./gerp inputDirectory outputFile" << endl;

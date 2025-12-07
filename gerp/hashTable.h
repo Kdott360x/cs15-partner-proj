@@ -6,6 +6,10 @@
  *  CS 15 PROJ4
  *
  *  purpose: This file contains the interface for the processing.cpp functions.
+            It defines the public functions that the user can use to interact
+            with the contents of the hash table, including inserting and 
+            looking up words, and private variables that allow us to
+            actually create the table and track whether we need to rehash.
  */
 
 
@@ -21,7 +25,7 @@ using namespace std;
 
 class hashTable {
 public:
-    hashTable(); //constructor
+    hashTable();
     void insert(const string &key, Location &value);
     vector<Location> *lookup(const string &key);
     int size();

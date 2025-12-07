@@ -128,6 +128,42 @@ void Gerp::buildIndex(const string &rootDir) {
 * tested:    no
 */
 void Gerp::handleInsensitiveQuery(const string &query) {
+    string stripped = stripNonAlphaNum(query);
+    set<string> seen;
+
+    //handling empty query after stripping
+    if (stripped.length() == 0) {
+        out << query << " Not Found." << endl;
+        return;
+    }
+
+    //lowercase everything for insensitive search purposes
+    for (int i = 0; i < stripped.length(); i++) {
+        stripped[i] = tolower(stripped[i]);
+    }
+
+    vector<Location> *vals = index.lookup(stripped);
+
+    //handling if word isn't in the vector
+    if (vals == nullptr or vals->size() == 0) {
+        out << query << " Not Found." << endl;
+        return;
+    }
+
+    for (int i = 0; i < vals->size(); i++) {
+        Location temp = (*vals)[i];
+        string output = filePaths[temp.fileID] + ":" + 
+        to_string(temp.lineNum);
+        if (seen.find(output) != seen.end()) {
+            continue;
+        }
+
+        seen.insert(output);
+
+        //printing logic
+        out << filePaths[temp.fileID] << ":" << temp.lineNum <<
+            ": " << allLines[temp.fileID][temp.lineNum - 1] << endl;
+    }
 }
 
 /*
@@ -139,6 +175,58 @@ void Gerp::handleInsensitiveQuery(const string &query) {
 * tested:    no
 */
 void Gerp::handleSensitiveQuery(const string &query) {
+    string stripped = stripNonAlphaNum(query);
+    bool printed = false;
+
+    //same check for empty stripped query
+    if (stripped.length() == 0) {
+        out << query << " Not Found. Try with @insensitive or @i." << endl;
+        return;
+    }
+
+    //lowercase temporarily to get the relevant bucket
+    string temp = stripped;
+    for (int i = 0; i < temp.length(); i++) {
+        temp[i] = tolower(temp[i]);
+    }
+
+    vector<Location> *vals = index.lookup(temp);
+    if (vals == nullptr or vals->size() == 0) {
+        out << query << " Not Found. Try with @insensitive or @i." << endl;
+        return;
+    }
+
+    set<string> seen;
+
+    //logic for matching original word to query now that we have bucket
+    //& instances. also ensure that we only get each word once!
+    for (int i = 0; i < vals->size(); i++) {
+        Location loc = (*vals)[i];
+        string original = stripNonAlphaNum(loc.originalWord);
+        if (original != stripped) {
+            continue;
+        }
+
+        
+        string output = filePaths[loc.fileID] + ":" + 
+                                to_string(loc.lineNum);
+        if (seen.find(output) != seen.end()) {
+            continue;
+        }
+
+        seen.insert(output);
+
+        //printing logic
+        out << filePaths[loc.fileID] << ":" << loc.lineNum <<
+            ": " << allLines[loc.fileID][loc.lineNum - 1] << endl;
+
+        printed = true;
+    }
+
+    //check for if only lowercase matches were there, no exact ones
+    if (not printed) {
+        out << query << " Not Found. Try with @insensitive or @i." << endl;
+    }
 }
 
 /*

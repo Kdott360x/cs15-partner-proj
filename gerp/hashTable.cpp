@@ -26,6 +26,7 @@ using namespace std;
 * effects:   gives default vals for all member variables
 */
 hashTable::hashTable() {
+    //picked 201 because it is a reasonably large start number
     buckets.resize(201);
     numElements = 0;
     loadFactor = 0.7;
@@ -110,6 +111,7 @@ int hashTable::size() {
 * effects:   none
 */
 int hashTable::hasher(const string &key, int mod) {
+    //get hash val from lib
     hash<string> hashObj;
     size_t hashNum = hashObj(key);
     int divisor;
@@ -118,6 +120,8 @@ int hashTable::hasher(const string &key, int mod) {
     } else {
         divisor = mod; 
     }
+
+    //choose mod based on which table size to use
     int bucket = hashNum % divisor;
     return bucket;
 }
@@ -130,11 +134,15 @@ int hashTable::hasher(const string &key, int mod) {
 * effects:   creates a new, expanded hash table
 */
 void hashTable::rehash() {
+    //get new table size
     int oldSize = buckets.size();
     int currSize = (oldSize*2) + 1;
+    
+    //create new bucket with new size
     vector<vector<Element>> currBuckets;
     currBuckets.resize(currSize);
 
+    //put contents of old vector into new based on rehash
     for (int i = 0; i < oldSize; i++) {
         vector<Element> &old = buckets[i];
         for (size_t j = 0; j < old.size(); j++) {
