@@ -1,7 +1,7 @@
 ###
 ### Makefile for Gerp Project
 ###
-### Author:  YOUR NAME HERE
+### Author:  Henry Dotterer and Tvisha Gupta
 
 ## 
 ## Build up your Makefile in a similar manner as for Zap. Feel free 
@@ -12,11 +12,28 @@
 ## At the end, you can delete this comment!
 ## 
 
+gerp: main.o gerp.o hashTable.o processing.o $(PROVIDED_OBJS)
+	$(CXX) $(CXXFLAGS) main.o gerp.o hashTable.o processing.o $(PROVIDED_OBJS) -o gerp
+
+
+main.o: main.cpp gerp.h
+	$(CXX) $(CXXFLAGS) -c main.cpp
+
+gerp.o: gerp.cpp gerp.h hashTable.h Location.h processing.h
+	$(CXX) $(CXXFLAGS) -c gerp.cpp
+
+hashTable.o: hashTable.cpp hashTable.h Location.h
+	$(CXX) $(CXXFLAGS) -c hashTable.cpp
+
+
+
+
+
 unit_test: unit_test_driver.o processing.o FSTree.o DirNode.o
 	$(CXX) ${CXXFLAGS} unit_test_driver.o processing.o FSTree.o DirNode.o
 
-processing.o: processing.cpp processing.h
-	$(CXX) ${CXXFLAGS} -c processing.cpp
+processing.o: processing.cpp processing.h FSTree.h DirNode.h
+	$(CXX) $(CXXFLAGS) -c processing.cpp
 ##
 ## Here is a special rule that removes all .o files besides the provided ones 
 ## (DirNode.o and FSTree.o), all temporary files (ending with ~), and 
