@@ -55,7 +55,7 @@ void hashTable::insert(const string &key, Location &value) {
     }
 
     //add new key-val pair to vector if not there
-    if (temp == false) {
+    if (not temp) {
         Element elem;
         elem.key = key;
         elem.locs.push_back(value);
