@@ -1,1 +1,184 @@
-This is a test Readme
+A Project & People
+ANSWER: Project Gerp, Tvisha Gupta and Henry Dotterer
+
+B: Purpose of the program
+This program helps us search through a directory to see which files 
+contain certain words. Users will be able to query the program for 
+words, case-insensitive and case-sensitive, and the program will 
+look through the files and print out the lines and the line number 
+on which those words are. The program will print the results to an 
+output file that the user can then look through.
+
+C: Acknowledgements:
+We used the TAs for help, cplusplus.com, and stack overflow for help
+ on understanding how hash functions and sets work.
+
+D: Files
+gerp.cpp: This is the implementation of the gerp class, with the code 
+for setting up the index with all the words for querying by the user 
+and separate functions to carry out each query.
+gerp.h: This is the interface for the gerp class, which has the private
+functions for the main functionality of the gerp class: building the 
+index with the words from the directory files, handling all user queries,
+and managing the output file. It also has private variables that hold the 
+hash table with the words, the vectors for the paths and lines, and the 
+ofstream to write to the output file.
+hashTable.cpp: This is the implementation of the hash table, with 
+code for initializing the empty hash table and conducting the core functions.
+hashTable.h: This is the interface for our definition of a hashTable, 
+one that works for the Gerp program. It has public functions for inserting
+and finding elements, and getting the size of the table. We also have 
+private variables for the key-val pair instances, the buckets in the
+table, and variables and functions to track when to expand the 
+hashTable and rehash.
+Location.h: this file defines the struct we use to store information 
+about each word. We make instances of this to store 
+in our hash table buckets. 
+main.cpp: this file creates an instance of the gerp class
+and runs the entire program, using the command-line arguments provided.
+processing.cpp: this file contains the implementation of the basic 
+functions for getting a word down to its base state and traversing 
+directories.
+processing.h: this file contains the interface for the two functions
+that strip a word of any nonalphanumeric characters and traversing 
+a directory, along with their helper functions.
+unit_tests.h: this file contains the unit tests we had for our processing.cpp
+functions. We also tested our buildIndex function from gerp and the hash
+table implementation here.
+[test directories]: we created a number of test directories with 
+different numbers of subdirectories and files, each with different
+types of text content, for testing.
+
+
+E: Compilation and running
+We used a makefile to link all our files together, so type make. 
+Then, type ./gerp with the directory name and the output file
+
+F: Architectural overview
+The gerp class is the central point of the program, and all other
+classes are built to include in it to help with functionality. 
+The gerp class includes hashTable.h and processing.h, as it uses 
+them to create an instance of the hash table to store all the words
+ of the directories and files after traversing through them, and to
+strip all queries to get just the word we are traversing for. It
+also indirectly includes Location.h, FSTree.h, and DirNode.h, because
+of their usage in other files, which we shall explain as well!
+The hashTable class includes Location.h as we use instances of the
+Location structure to store information about each instance of a particular
+word in a vector of type Location. We use that vector of Location 
+instances as the value for each key-value pair in each bucket of 
+our hash table. The processing class includes FSTree.h and DirNode.h.
+It uses them to build a tree from each directory, and then using the 
+root DirNode, prints out the full paths of every file.
+
+We also include a number of libraries, such as string, vector, functional,
+and more, in order to make the program functional 
+using other C++ data structures!
+
+G. Data structures & algorithms
+HashTable: This was the main data structure that we both designed and 
+used. Each bucket of our hash table contained a vector of Elements. 
+Element was a custom struct we defined to hold our key-value pairs, 
+where the key was the lowercased version of each word from the files 
+we traversed, and the value was a vector of Location objects. 
+Location was a further custom struct we defined that held detailed 
+information about each occurrence of a word, including which file 
+it came from, which line number it was on, and what the original word was.
+We also included the Functional library to gain access to a hash function, 
+needed to actually carry out the functionality of having a 
+key to a particular bucket. 
+
+We needed to make sure that we could access content from the hash 
+table as close to O(1) time as possible, and so, the hash table made 
+the most sense. In the AVERAGE case, when we account for chaining and a 
+low load factor, accessing and inserting are each O(1)—we did both of 
+those things in our implementation, which collisions being handled using 
+chaining and having a rehash function for when the load factor was too 
+large. The tradeoff for us was that we did take a bit more time and 
+memory initially while indexing and building the table, because we are 
+reading over and storing every single word, and also may need to 
+rehash and expand the hash table. However, it means that the queries 
+themselves are answered almost instantly because we are simply looking 
+up within the table and Iterating over the stored Location vectors.
+
+Vector: The vector was our support data structure. We used it to build 
+the hash table by storing each occurrence of a word in a vector and 
+having each value of a key-value pair be a vector of word occurrences 
+(handled collisions using chaining). We also used a vector filePaths 
+to store the files paths of every single file, and a vector of vectors 
+allLines to have a collection of all the lines in every single file. 
+We chose to use vectors because much of this program relied on being 
+able to quickly access a large collection of data. Vectors have the 
+ability to expand to account for increasing data, and give us O(1) 
+access time to its elements, so it made the most sense. While we do 
+use a decent amount of memory to store the content, it allows us to 
+keep lookup and iteration simple. We also use pointers to vector 
+indices within each of our other structs and variables to limit 
+the repeated storing of information.
+
+Set: We used a set to account for the case in which a particular word 
+appears multiple times in a sentence, but we only want to print the 
+sentence once. During each query, we have a set of pairs, where the pair 
+is the file ID and the line number. Before we print out a line to the 
+output file, we check to make sure the pair isn’t in the set. If it is, 
+then we don’t print it out. If it isn’t, then we print the line and 
+add a new pair to the set.
+
+Algorithms:
+Build index: This function was how we actually created the hash table. 
+We traverse the directory tree by starting at the root directory, and 
+we do a number of things during this traversal. First, for each file, 
+we store the entire path of the file in the vector filePaths. Then, we 
+also store every single line from a particular file in a subvector of 
+the large vector allLines. For each word in a line, we convert it to 
+lowercase and remove all non alphanumeric characters, and use it as a 
+key for a hash table bucket. We create an instance of Location for each 
+word’s occurrence and then insert it into the hash table in the 
+respective bucket using the insert() function from the hash table 
+class. At the end of everything, we have a fully populated hash 
+table with all occurrences of all words, as well as vectors for 
+each file’s lines and paths.
+
+HandleSensitive & HandleInsensitive: both of these functions start 
+off by following the same general pattern. We get a stripped version 
+of the word from the query and handle what happens if we have an 
+empty stripped version (because the query had no alphanumeric characters).
+We then lowercase the stripped query and get the relevant bucket and 
+Location vector from our hash table. We also initialize a set to make 
+sure that we print out each relevant line only ones. The difference between 
+the implementation of the two is which items in the Location vector we print.
+For the insensitive case, we print all occurrences of the lowercase key 
+because it will always match. For the sensitive case, we have an extra 
+step of comparing the query to the originalWord variable in the 
+Location instance. If it matches, only then do we print.
+
+H: Testing
+First, we used unit tests to test the functions that made up the core 
+functionality, like inserting, lookup, stripping. We struggled a little 
+bit to test the directory traversal function using the unit_test structure, 
+so instead, we created a small test directory and fed the function that 
+directory. We redirected the output to an output file and manually 
+wrote an output file with what the paths should be. We then diffed 
+the two files. We chose to test the gerp class functions with our
+test directories themselves, seeing that the hashtable was
+properly being built by feeding text files and directories with just
+one or two files and words, and then testing the output files
+to see if the paths were being printed.
+
+
+Then, once we knew that the functions themselves were working, 
+after we put the whole program together, we created our own test 
+directories to see if on a super basic level, the program was working. 
+This was also how we tested our query functions. We focused these
+tests on edge cases rather than data size, because we had the 
+Gutenberg files to account for the the latter.
+We had individual test files and related command files for 
+spacing, punctuation, changing output files, and each of
+query sensitivity ones. After we tested using those and fixed
+any caught mistakes, we fed the program the Gutenberg directories
+we were given. While doing all of this,
+we diffed our output files against those from the reference, 
+and also checked the time and space usage by doing gerp_perf.
+
+I: Time
+Total, part 1 and 2: 30 hours

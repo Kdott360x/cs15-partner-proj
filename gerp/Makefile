@@ -21,6 +21,9 @@ all: gerp
 gerp: main.o gerp.o hashTable.o processing.o $(PROVIDED_OBJS)
 	$(CXX) $(CXXFLAGS) main.o gerp.o hashTable.o processing.o $(PROVIDED_OBJS) -o gerp
 
+unit_test: unit_test_driver.o processing.o FSTree.o DirNode.o hashTable.o
+	$(CXX) ${CXXFLAGS} unit_test_driver.o processing.o FSTree.o DirNode.o hashTable.o
+
 
 main.o: main.cpp gerp.h
 	$(CXX) $(CXXFLAGS) -c main.cpp
@@ -30,9 +33,6 @@ gerp.o: gerp.cpp gerp.h hashTable.h Location.h processing.h
 
 hashTable.o: hashTable.cpp hashTable.h Location.h
 	$(CXX) $(CXXFLAGS) -c hashTable.cpp
-
-unit_test: unit_test_driver.o processing.o FSTree.o DirNode.o
-	$(CXX) ${CXXFLAGS} unit_test_driver.o processing.o FSTree.o DirNode.o
 
 processing.o: processing.cpp processing.h FSTree.h DirNode.h
 	$(CXX) $(CXXFLAGS) -c processing.cpp
