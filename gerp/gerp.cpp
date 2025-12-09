@@ -59,7 +59,7 @@ void Gerp::openOutput(const string &filename) {
     }
     out.open(filename);
 
-    if (!out.is_open()) {
+    if (not out.is_open()) {
         cerr << "Error: could not open output file " << filename << endl;
     }
 }
@@ -80,7 +80,7 @@ void Gerp::buildIndex(const string &rootDir) {
     // read each file line by line and insert words into the hash table
     for (int fileID = 0; fileID < (int) filePaths.size(); fileID++) {
         ifstream in(filePaths[fileID]);
-        if (!in.is_open()) {
+        if (not in.is_open()) {
             cerr << "Warning: could not open file " 
             << filePaths[fileID] << endl;
             continue;
@@ -89,6 +89,7 @@ void Gerp::buildIndex(const string &rootDir) {
         string line;
         int lineNum = 0;
 
+        // read each line
         while (getline(in, line)) {
             lineNum++;
             allLines[fileID].push_back(line);
@@ -96,6 +97,7 @@ void Gerp::buildIndex(const string &rootDir) {
             istringstream iss(line);
             string token;
 
+            // go through each word
             while (iss >> token) {
                 string stripped = stripNonAlphaNum(token);
                 if (stripped.empty()) {
@@ -108,11 +110,13 @@ void Gerp::buildIndex(const string &rootDir) {
                     c = tolower(c);
                 }
 
+                // create location and insert into index
                 Location loc;
                 loc.fileID = fileID;
                 loc.lineNum = lineNum;
                 loc.originalWord = token;
 
+                //insert
                 index.insert(key, loc);
             }
         }
@@ -131,7 +135,7 @@ void Gerp::handleInsensitiveQuery(const string &query) {
     string stripped = stripNonAlphaNum(query);
     set<string> seen;
 
-    //handling empty query after stripping
+    // if empty query after stripping
     if (stripped.length() == 0) {
         out << query << " Not Found." << endl;
         return;
@@ -144,7 +148,7 @@ void Gerp::handleInsensitiveQuery(const string &query) {
 
     vector<Location> *vals = index.lookup(stripped);
 
-    //handling if word isn't in the vector
+    //if word isn't in the vector
     if (vals == nullptr or vals->size() == 0) {
         out << query << " Not Found." << endl;
         return;
@@ -223,7 +227,7 @@ void Gerp::handleSensitiveQuery(const string &query) {
         printed = true;
     }
 
-    //check for if only lowercase matches were there, no exact ones
+    //no exact match -> print not found check insensitive
     if (not printed) {
         out << query << " Not Found. Try with @insensitive or @i." << endl;
     }
@@ -243,7 +247,7 @@ void Gerp::run() {
     while (true) {
         cout << "Query? ";
 
-        if (!getline(cin, line)) {
+        if (not getline(cin, line)) {
             cout << "Goodbye! Thank you and have a nice day." << endl;
             return;
         }
@@ -254,12 +258,12 @@ void Gerp::run() {
 
         istringstream iss(line);
         string first;
-        if (!(iss >> first)) {
+        if (not (iss >> first)) {
             continue;
         }
 
         // quit commands
-        if (first == "@q" || first == "@quit") {
+        if (first == "@q" or first == "@quit") {
             cout << "Goodbye! Thank you and have a nice day." << endl;
             return;
         }
@@ -274,7 +278,7 @@ void Gerp::run() {
         }
 
         // case-insensitive search
-        if (first == "@i" || first == "@insensitive") {
+        if (first == "@i" or first == "@insensitive") {
             string word;
             while (iss >> word) {
                 handleInsensitiveQuery(word);
@@ -282,7 +286,7 @@ void Gerp::run() {
             continue;
         }
 
-        // default: case-sensitive search on all tokens in the line
+        // default to case sensitive
         handleSensitiveQuery(first);
 
         string word;
