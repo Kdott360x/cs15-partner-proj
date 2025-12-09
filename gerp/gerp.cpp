@@ -184,7 +184,7 @@ void Gerp::handleSensitiveQuery(const string &query) {
 
     //same check for empty stripped query
     if (stripped.length() == 0) {
-        out << query << " Not Found. Try with @insensitive or @i." << endl;
+        out << " Not Found. Try with @insensitive or @i." << endl;
         return;
     }
 
