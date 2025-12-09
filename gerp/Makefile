@@ -31,10 +31,6 @@ gerp.o: gerp.cpp gerp.h hashTable.h Location.h processing.h
 hashTable.o: hashTable.cpp hashTable.h Location.h
 	$(CXX) $(CXXFLAGS) -c hashTable.cpp
 
-
-
-
-
 unit_test: unit_test_driver.o processing.o FSTree.o DirNode.o
 	$(CXX) ${CXXFLAGS} unit_test_driver.o processing.o FSTree.o DirNode.o
 
